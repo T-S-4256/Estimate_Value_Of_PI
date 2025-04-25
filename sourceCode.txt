@@ -1,0 +1,84 @@
+import numpy as np
+import random
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import math
+
+
+def find_value_of_pi(totalNoOfPoints):
+    cirPoint = 0
+
+    # CENTER OF THE CIRCLE
+    x2, y2 = 0.5, 0.5
+
+    # RADIUS OF THE CIRCLE
+    radius = 0.5
+
+    # TOTAL NUMBER OF POINTER TO GENERATE RANDOM COORDINATE
+    sqPoint = totalNoOfPoints
+
+    # TO STORE THE CORDINATE FOR PLOTING INTO THE GRAPH
+    circlePoints = []
+    squarePoints = []
+
+    for _ in range(sqPoint):
+        # RANDOM X-COORDINATE
+        x1 = random.random()
+
+        # RANDOM Y-COORDINATE
+        y1 = random.random()
+
+        # FINDING THE DISTANCE FROM THE CENTER
+        distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+        # CHECK THE POINTS LIES IN THE CIRCLE OR NOT
+        if distance <= radius:
+            # IF POINT LIES IN THE CIRCLE THEN STORE THE COORDINATE INTO THE CIRCLE LIST
+            cirPoint += 1
+            circlePoints.append((x1, y1))
+        else:
+            # IF POINT LIES OUTSIDE THE CIRCLE THEN STORE THE COORDINATE INTO THE SQUARE LIST
+            squarePoints.append((x1, y1))
+
+    # FIND THE VALUE OF PI
+    pi_estimate = (4 * cirPoint) / sqPoint
+
+    # CONVERTING LIST INTO NUMPY ARRAY FOR FASTER CALCULATION
+    circlePoints = np.array(circlePoints)
+    squarePoints = np.array(squarePoints)
+
+    fig, ax = plt.subplots()
+    ax.set_aspect("equal")
+
+    # DRAW THE CIRCLE BOUNDRY
+    circle = patches.Circle(
+        (0.5, 0.5), radius, fill=False, edgecolor="blue", linewidth=2
+    )
+    ax.add_patch(circle)
+
+    # PLOT THE POINTS IN THE CIRCLE WITH GREEN AND  OUTSIDE CIRCLE WITH RED COLOR
+    ax.scatter(
+        circlePoints[:, 0], circlePoints[:, 1], color="green", label="Inside", s=10
+    )
+    ax.scatter(
+        squarePoints[:, 0], squarePoints[:, 1], color="red", label="Outside", s=10
+    )
+
+    # SET AXIS LIMITS
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.set_title(f"Monte Carlo Estimate of π ≈ {pi_estimate:.5f}")
+    ax.legend()
+    ax.grid(True)
+
+    # DISPLAY THE GRAPH
+    plt.show()
+
+    # CLOSE THE PLAOT FOR FREEING THE MEMORY
+    plt.close()
+
+    # PRINTING THE VALUE OF PI
+    print(f"Estimated value of Pi: {pi_estimate}")
+
+
+find_value_of_pi(1000)

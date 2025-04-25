@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monte Carlo Pi Estimator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #3498db;
+      padding:10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top:20px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .result {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .links {
+      margin-top: 25px;
+      text-align: center;
+    }
+    .links a {
+      margin: 10px;
+      display: inline-block;
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+    {% if pi_value %}
+  <div class="result">
+    <h2>Estimated π: {{ pi_value }}</h2>
+
+    <!-- Show the graph as an image -->
+    <div class="graph-display" style="margin-top: 20px;">
+      <h3>📈 Graph:</h3>
+      <img src="{{ url_for('static', filename='graph.png') }}" alt="Monte Carlo Graph" style="width:100%; max-width:500px; border:1px solid #ccc; border-radius:8px;" />
+    </div>
+
+    <!-- Show the source code -->
+<div class="code-display" style="margin-top: 30px;">
+    <h3>📄 Source Code For Finding Value Of Pi Using Monte Carlo Simulation :</h3>
+    <pre style="background:#f4f4f4; padding:15px; border-radius:8px; max-height:400px; overflow:auto; font-size:14px;">
+  {{ source_code }}
+    </pre>
+    <div class="links" style="margin-top: 10px;">
+      <a href="{{ url_for('download_source') }}" download>⬇️ Download Source Code</a>
+    </div>
+  </div>
+  
+{% else %}
+
+  <div class="container">
+    <h1>Estimate π with Monte Carlo</h1>
+    
+    <form method="POST" action={{url_for('Estimate_Pi')}}>
+      <label for="total_points">Total Number of Square Points:</label>
+      <input type="text" id="total_points" name="total_points" min="1" value="{{ total_points }}" required />
+      <button type="submit">Estimate Pi</button>
+    </form>
+    {% endif %}
+  </div>
+</body>
+</html>
